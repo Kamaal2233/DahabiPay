@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SELL USDT</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #007BFF;
+    }
+
+    button {
+      background: #007BFF;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <form action="https://submit-form.com/49B64jKpT" method="POST" class="container" id="formSection">
+    <h2>SELL USDT</h2>
+
+    <label for="amount">Enter Amount</label>
+    <input type="number" name="Amount" id="amount" required />
+
+    <label for="send">Choose (Network)</label>
+    <select name="Send From" id="send" required>
+      <option value="">-- Select Wallet Type--</option>
+      <option value="USDT TRC20">USDT TRC20</option>
+      <option value="USDT BSC BEP20">USDT BSC BEP20</option>
+
+    </select>
+
+    <label for="receive">Choose (Receive To)</label>
+    <select name="Receive To" id="receive" required>
+      <option value="">-- Select --</option>
+      <option value="Zaad">Zaad</option>
+      <option value="EVC">EVC</option>
+      <option value="Ebirr">Ebirr</option>
+      <option value="eDahab">eDahab</option>
+    </select>
+
+    <label for="deposit">From Deposit  Hashtag</label>
+    <input type="text" name="Deposit Hashtag" id="deposit" required />
+
+    <label for="withdraw">To Withdraw</label>
+    <input type="text" name="Withdraw Number" id="withdraw" required />
+
+    <label for="email">Enter your Email</label>
+    <input type="email" name="Email" id="email" required />
+
+    <!-- Hidden field to disable captcha and redirect if needed -->
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="box">
+    
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById('formSection').addEventListener('submit', function (e) {
+      const send = document.getElementById('send').value;
+      const receive = document.getElementById('receive').value;
+      if (send === receive) {
+        e.preventDefault();
+        alert('Fadlan dooro laba lacagood oo kala duwan!');
+      }
+    });
+  </script>
+</body>
+</html>
