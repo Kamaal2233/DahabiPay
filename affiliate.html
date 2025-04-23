@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dahabi Affiliate</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      margin: 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      display: block;
+    }
+    button {
+      padding: 8px 15px;
+      background-color: blue;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+    }
+    button:hover {
+      background-color: darkblue;
+    }
+    .output {
+      margin-top: 20px;
+      font-size: 18px;
+      display: none;
+    }
+    table {
+      width: 80%;
+      margin: auto;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Dahabi Affiliate</h2>
+  <input type="text" id="userId" placeholder="Geli ID-ga Ama Referral kaaga">
+  <input type="password" id="userPassword" placeholder="Geli Password-ka">
+  <button onclick="checkUser()">Search</button>
+
+  <div class="output" id="result"></div>
+
+  <script>
+    const users = [
+      {
+        id: "12345",
+        password: "ahmed123",
+        name: "Ahmed Ali",
+        phone: "0631234567",
+        balance: "$500",
+        email: "ahmed@example.com",
+        accountType: "Premium"
+      },
+      {
+        id: "67890",
+        password: "fadumo456",
+        name: "Fadumo Mohamed",
+        phone: "0659876543",
+        balance: "$1200",
+        email: "fadumo@example.com",
+        accountType: "Standard"
+      }
+    ];
+
+    function checkUser() {
+      let userId = document.getElementById("userId").value.trim();
+      let userPassword = document.getElementById("userPassword").value.trim();
+      let resultDiv = document.getElementById("result");
+
+      let user = users.find(u => u.id === userId && u.password === userPassword);
+
+      if (user) {
+        resultDiv.innerHTML = `
+          <table>
+            <tr><th>Account Balance</th><td><strong>${user.balance}</strong></td></tr>
+            <tr><th>Name</th><td>${user.name}</td></tr>
+            <tr><th>Phone</th><td>${user.phone}</td></tr>
+            <tr><th>Email</th><td>${user.email}</td></tr>
+            <tr><th>Account Type</th><td>${user.accountType}</td></tr>
+            <tr><th>Account Status</th><td>Verified</td></tr>
+          </table>
+          <br>
+          <button onclick="contactWhatsApp()">Contact WhatsApp</button>
+        `;
+        resultDiv.style.display = "block";
+      } else {
+        resultDiv.innerHTML = `<p class="error">ID ama Password waa khalad!</p>`;
+        resultDiv.style.display = "block";
+      }
+    }
+
+    function contactWhatsApp() {
+      let phone = "252636291881";
+      let message = "Asc,";
+      let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+</html>
