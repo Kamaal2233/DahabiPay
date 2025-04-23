@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diiwaangelinta Affiliate-ka | DahabiPay</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #0d6efd;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+    }
+    label {
+      font-weight: bold;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+    .terms-text {
+      font-size: 14px;
+    }
+    .terms-text a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+    .terms-text a:hover {
+      text-decoration: underline;
+    }
+    button {
+      background: #0d6efd;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover {
+      background: #084ec1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Diiwaangelinta Affiliate-ka DahabiPay</h2>
+    <form action="https://getform.io/f/ajjmgzja" method="POST" enctype="multipart/form-data" id="affiliateForm">
+      <input type="hidden" name="_redirect" value="https://dahabipay.netlify.app/thanks.html" />
+      <input type="hidden" name="_append" value="true" />
+      
+      <label>Magaca Buuxa:</label>
+      <input type="text" name="name" required>
+
+      <label>Nambarka WhatsApp:</label>
+      <input type="text" name="whatsapp" required>
+
+      <label>Account ka lacagta aad ku helayso:</label>
+      <input type="text" name="account" required>
+
+      <label>Email:</label>
+      <input type="email" name="email" required>
+
+      <label>Magaalada:</label>
+      <input type="text" name="location" required>
+
+      <label>Address kaaga:</label>
+      <input type="text" name="address" required>
+
+      <label>Document Aqoonsi (ID, Passport):</label>
+      <input type="file" name="id_document" accept=".pdf,.jpg,.jpeg,.png" required>
+
+      <label>Sawir Kur ah (Selfie):</label>
+      <input type="file" name="profile_photo" accept=".jpg,.jpeg,.png" required>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree" required>
+        <label for="agree" class="terms-text">
+          Waxaan aqbalay shuruudaha Affiliate Program-ka DahabiPay<br>
+          <a href="Shuruudo.html" target="_blank">SHURUUDAHA</a>
+        </label>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("affiliateForm").addEventListener("submit", function(e) {
+      if (!document.getElementById("agree").checked) {
+        alert("Fadlan oggolow shuruudaha ka hor intaadan dirin.");
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
