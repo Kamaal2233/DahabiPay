@@ -180,7 +180,6 @@
     </form>
   </div>
 
-  <!-- RECEIPT MODAL -->
   <div id="receiptModal">
     <div class="receipt-style">
       <img src="logo1.png" alt="DahabiPay Logo" />
@@ -188,6 +187,7 @@
       <div class="receipt-sub">Official Exchange Receipt</div>
       <hr />
       <div class="receipt-body">
+        <div class="receipt-row"><span><strong>Transaction ID:</strong></span><span id="r-id"></span></div>
         <div class="receipt-row"><span><strong>Date:</strong></span><span id="r-date"></span></div>
         <div class="receipt-row"><span><strong>Amount:</strong></span><span id="r-amount"></span></div>
         <div class="receipt-row"><span><strong>Send From:</strong></span><span id="r-send"></span></div>
@@ -204,8 +204,8 @@
     </div>
   </div>
 
-  <!-- Hidden Form to Submit to submit-form.com -->
   <form id="hiddenForm" action="https://submit-form.com/49B64jKpT" method="POST" style="display: none;">
+    <input name="Transaction ID" id="hidden-transaction-id" />
     <input name="Amount" id="hidden-amount" />
     <input name="Send From" id="hidden-send" />
     <input name="Receive To" id="hidden-receive" />
@@ -233,9 +233,13 @@
         return;
       }
 
+      // Generate Transaction ID
+      const transactionId = 'DP' + Math.floor(10000000 + Math.random() * 90000000); // DP followed by 8 random digits
+
       // Show receipt info
+      document.getElementById('r-id').textContent = transactionId;
       document.getElementById('r-date').textContent = new Date().toLocaleString();
-      document.getElementById('r-amount').textContent = amount ;
+      document.getElementById('r-amount').textContent = amount;
       document.getElementById('r-send').textContent = send;
       document.getElementById('r-receive').textContent = receive;
       document.getElementById('r-deposit').textContent = deposit;
@@ -243,6 +247,7 @@
       document.getElementById('r-email').textContent = email;
 
       // Fill hidden form values
+      document.getElementById('hidden-transaction-id').value = transactionId;
       document.getElementById('hidden-amount').value = amount;
       document.getElementById('hidden-send').value = send;
       document.getElementById('hidden-receive').value = receive;
@@ -266,4 +271,4 @@
     }
   </script>
 </body>
-          </html>
+</html>
