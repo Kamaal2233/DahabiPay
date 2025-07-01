@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DahabiPay Bot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --dahabi-gold: #FFD700;
+      --dahabi-dark: #0d1b3e;
+      --dahabi-navy: #1a2b5a;
+      --dahabi-light: #f8f9fa;
+      --dahabi-blue: #2563eb;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    }
+    .chat-container {
+      width: 380px;
+      height: 600px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    .chat-header {
+      background: linear-gradient(to right, var(--dahabi-dark), var(--dahabi-navy));
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .chat-header img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      border-radius: 50%;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: var(--dahabi-light);
+    }
+    .message {
+      margin-bottom: 15px;
+      max-width: 80%;
+      padding: 12px 18px;
+      border-radius: 18px;
+      line-height: 1.5;
+      font-size: 14px;
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .bot-message {
+      background-color: white;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid #eee;
+    }
+    .user-message {
+      background: linear-gradient(to right, var(--dahabi-dark), var(--dahabi-navy));
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+      border-bottom-right-radius: 5px;
+    }
+    .chat-input-container {
+      display: flex;
+      padding: 15px;
+      background-color: white;
+      border-top: 1px solid #eee;
+    }
+    #user-input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      outline: none;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+    #user-input:focus {
+      border-color: var(--dahabi-dark);
+    }
+    #send-button {
+      background: linear-gradient(to right, var(--dahabi-dark), var(--dahabi-navy));
+      color: white;
+      border: none;
+      padding: 12px;
+      margin-left: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    #send-button:hover {
+      transform: scale(1.05);
+    }
+    .timestamp {
+      font-size: 11px;
+      color: #999;
+      margin-top: 5px;
+      text-align: right;
+    }
+    .support-options {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .support-option {
+      background: linear-gradient(to right, var(--dahabi-dark), var(--dahabi-blue));
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.2s;
+    }
+    .support-option:hover {
+      transform: scale(1.05);
+    }
+    .quick-replies {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .quick-reply {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quick-reply:hover {
+      background-color: #e6f0ff;
+      border-color: var(--dahabi-dark);
+    }
+    .typing-indicator {
+      display: flex;
+      padding: 10px 15px;
+      background-color: white;
+      border-radius: 18px;
+      width: fit-content;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid #eee;
+    }
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ccc;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes typingAnimation {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-5px); background-color: var(--dahabi-dark); }
+    }
+    .bot-icon {
+      position: absolute;
+      left: 15px;
+      font-size: 18px;
+      color: var(--dahabi-gold);
+    }
+    .service-card {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 8px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border-left: 3px solid var(--dahabi-dark);
+    }
+    .service-title {
+      font-weight: bold;
+      color: var(--dahabi-dark);
+      margin-bottom: 5px;
+    }
+    .service-desc {
+      font-size: 12px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <i class="fas fa-robot bot-icon"></i>
+     
+      DahabiPay Bot
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="message bot-message">
+        Salaamu calaykum! Waxaan ahay DahabiPay Bot, Sidee kuu caawiyaa?
+        <div class="timestamp" id="initial-timestamp"></div>
+        <div class="quick-replies">
+          <div class="quick-reply" onclick="quickReply('Caawin')">Caawin</div>
+          <div class="quick-reply" onclick="quickReply('Adeegyada')">Adeegyada</div>
+          <div class="quick-reply" onclick="quickReply('Qiimaha')">Qiimaha</div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-input-container">
+      <input type="text" id="user-input" placeholder="Geli su'aashaada..." autocomplete="off">
+      <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+    
+    // Set initial timestamp
+    document.getElementById('initial-timestamp').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Enhanced responses with more natural Somali language
+    const responses = {
+      "salaam": "Wa calaykum salaam! Maanta sidee kuu caawin karnaa?",
+      "asc": "Wa calaykum salaam saaxiib! Sideen kuu caawiyaa ama adeega aad u baahan tahay in lagaa caawiyo iisheeg?",
+      "caawi": "Hagaag walaal, waa maxay adeega aad rabto in lagaa caawiyo? Waxaan ku caawin karnaa:",
+      "sarif": `Waxaan kuu diyaarinay adeegyo sarif lacag ah oo aad ugu wanaagsan:
+      
+      <div class="service-card">
+        <div class="service-title">EVC Plus</div>
+        <div class="service-desc">Sarif lacag degdeg ah oo Soomaaliya</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-title">ZAAD Service</div>
+        <div class="service-desc">Sarif lacag Telesom</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-title">USDT (Cryptocurrency)</div>
+        <div class="service-desc">Iibinta iyo iibsashada USDT</div>
+      </div>
+      
+      Adeeggee aad u baahan tahay?`,
+      "cilad": `Waan ka xumahay midaas, ma u baahan tahay in aan si toos ah kuugu gudbiyo qaybta daryeelka macmiilka`,
+      "evc": `Haa, waad heli kartaa adeegan adiga oo ka diri kara kuna dirsan kara lacagahaaga si fudud.`,
+      "zaad": `Haa waad heli kartaa adeegan adiga oo ka diri kara kuna dirsan kara lacagahaaga si fudud.`,
+      "mpesa": `Haa waad heli kartaa adeegan adiga oo ka diri kara kuna dirsan kara lacagahaaga si fudud.`,
+      "ebirr": `Haa waad heli kartaa adeegan adiga oo ka diri kara kuna dirsan kara lacagahaaga si fudud.`,
+      "sahal": `Haa, waad heli kartaa adeegan adiga oo ka diri kara kuna dirsan kara lacagahaaga si fudud.`,
+      "usdt": `Haa, waad heli kartaa adeegan adiga oo ka diri kara kuna dirsan kara lacagahaaga si fudud.`,
+      "qiimaha": "Qiimaha sarifka waxay ku xidhan yihiin qadarka lacagta iyo adeegga aad isticmaalayso. Fadlan noo sheeg adeegga aad rabto si aan kuu soo dirno qiimaha ugu dambeeya.",
+      "adeeg": `Waxaan bixinaa adeegyo kala duwan oo isku badal lacageed ah sida:
+      
+      <div class="service-card">
+        <div class="service-title">Adeegyada Soomaaliya</div>
+        <div class="service-desc">EVC, ZAAD, SAHAL, eDahab</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-title">Adeegyada Afrika</div>
+        <div class="service-desc">M-Pesa (Kenya), eBirr (Ethiopia)</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-title">Cryptocurrency</div>
+        <div class="service-desc">USDT (Tether)</div>
+      </div>
+      
+      Adeeggee aad u baahan tahay?`,
+      "dahabipay": `<div class="service-card">
+        <div class="service-title">DahabiPay</div>
+        <div class="service-desc">Shirkad sarif lacag oo aad ugu xilsaaran dadka Soomaaliyeed</div>
+      </div>
+      
+      Waxaad naga heli kartaa:
+      - Sarif lacag degdeg ah
+      - Iibinta iyo iibsashada USDT
+      - Adeegyo kala duwan oo lacag bixinta ah`,
+      "sida lacag loo diro": `Habka sarifka lacagta:
+      
+      1. Nagala soo xiriir WhatsApp ama email
+      2. Noo sheeg adeegga aad rabto (EVC, ZAAD, etc.)
+      3. Noo sheeg qofka aad rabto inaad u dirto
+      4. Noo gudbi xogtaaga
+      5. Lacagta waxaa lagaa soo celin doonaa daqiiqado gudahood
+      
+      Haddii aad rabto inaad bilowdo, fadlan noo sheeg:
+      1. Magacaaga
+      2. Lambarkaaga
+      3. Qofka aad lacag u dirineyso
+      4. Qadarka lacagta`,
+      "mahadsanid": "Waad ku mahadsan tahay isticmaalka DahabiPay! Haddii aad qabto wax su'aalo ah, waan kuu caawin doonaa. Ma wax kale aad ka rabtaa?",
+      "default": "Waan ka xumahay, su'aashaada si buuxda uma fahmin. Ma hubtaa inaad isticmaalayso ereyada saxda ah? Haddii kale, isku day inaad su'aashaada si faahfaahsan iigu sheegto ama xulo mid ka mid ah ikhtiyaarada soo socda:"
+    };
+
+    // Show typing indicator
+    function showTyping() {
+      const typing = document.createElement('div');
+      typing.classList.add('typing-indicator');
+      typing.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      chatMessages.appendChild(typing);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return typing;
+    }
+
+    // Add message to chat
+    function addMessage(text, className) {
+      const message = document.createElement('div');
+      message.classList.add('message', className);
+      
+      // Check if text contains HTML or not
+      if (/<[a-z][\s\S]*>/i.test(text)) {
+        message.innerHTML = text;
+      } else {
+        message.textContent = text;
+      }
+
+      const now = new Date();
+      const time = document.createElement('div');
+      time.classList.add('timestamp');
+      time.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      message.appendChild(time);
+      chatMessages.appendChild(message);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Show support options
+    function showSupport() {
+      const support = document.createElement('div');
+      support.classList.add('support-options');
+
+      const whatsapp = document.createElement('button');
+      whatsapp.classList.add('support-option');
+      whatsapp.innerHTML = '<i class="fab fa-whatsapp"></i> WhatsApp';
+      whatsapp.onclick = () => window.open("https://wa.me/252656291881", "_blank");
+
+      const email = document.createElement('button');
+      email.classList.add('support-option');
+      email.innerHTML = '<i class="fas fa-envelope"></i> Email';
+      email.onclick = () => window.location.href = "mailto:dahabipay@gmail.com";
+
+      const website = document.createElement('button');
+      website.classList.add('support-option');
+      website.innerHTML = '<i class="fas fa-globe"></i> Website';
+      website.onclick = () => window.open("https://dahabipay.netlify.app", "_blank");
+
+      support.appendChild(whatsapp);
+      support.appendChild(email);
+      support.appendChild(website);
+      
+      // Add quick replies
+      const quickReplies = document.createElement('div');
+      quickReplies.classList.add('quick-replies');
+      quickReplies.innerHTML = `
+        <div class="quick-reply" onclick="quickReply('EVC')">EVC</div>
+        <div class="quick-reply" onclick="quickReply('ZAAD')">ZAAD</div>
+        <div class="quick-reply" onclick="quickReply('USDT')">USDT</div>
+        <div class="quick-reply" onclick="quickReply('Qiimaha')">Qiimaha</div>
+      `;
+      
+      chatMessages.appendChild(support);
+      chatMessages.appendChild(quickReplies);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Process user message and generate response
+    function respond(message) {
+      const typing = showTyping();
+      
+      setTimeout(() => {
+        // Remove typing indicator
+        chatMessages.removeChild(typing);
+        
+        let reply = responses.default;
+        message = message.toLowerCase();
+        
+        // Check for specific keywords
+        if (message.includes('salaam') || message.includes('salaan')) {
+          reply = responses["salaam"];
+        } else if (message.includes('asc') || message.includes('asalamu calaykum')) {
+          reply = responses["asc"];
+        } else if (message.includes('caawi') || message.includes('caawimaad')) {
+          reply = responses["caawi"];
+        } else if (message.includes('sarif') || message.includes('lacag dirid')) {
+          reply = responses["sarif"];
+        } else if (message.includes('evc') || message.includes('evc plus')) {
+          reply = responses["evc"];
+        } else if (message.includes('zaad') || message.includes('zaad service')) {
+          reply = responses["zaad"];
+        } else if (message.includes('mpesa') || message.includes('m-pesa')) {
+          reply = responses["mpesa"];
+        } else if (message.includes('ebirr') || message.includes('e-birr')) {
+          reply = responses["ebirr"];
+        } else if (message.includes('edahab') || message.includes('e-dahab')) {
+          reply = responses["edahab"];
+        } else if (message.includes('sahal')) {
+          reply = responses["sahal"];
+        } else if (message.includes('usdt') || message.includes('crypto')) {
+          reply = responses["usdt"];
+        } else if (message.includes('qiima') || message.includes('cashar')) {
+          reply = responses["qiimaha"];
+        } else if (message.includes('adeeg') || message.includes('service')) {
+          reply = responses["adeeg"];
+        } else if (message.includes('dahabipay') || message.includes('company')) {
+          reply = responses["dahabipay"];
+        } else if (message.includes('sida lacag') || message.includes('habka dirida')) {
+          reply = responses["sida lacag loo diro"];
+        } else if (message.includes('mahad') || message.includes('thanks')) {
+          reply = responses["mahadsanid"];
+        }
+        
+        addMessage(reply, "bot-message");
+        
+        // Show support options if default response or specific cases
+        if (reply === responses.default || 
+            message.includes('sarif') || 
+            message.includes('adeeg') ||
+            message.includes('caawi')) {
+          showSupport();
+        }
+      }, 1000 + Math.random() * 1000); // Random delay for more natural feel
+    }
+
+    // Handle quick replies
+    function quickReply(text) {
+      userInput.value = text;
+      sendButton.click();
+    }
+
+    // Send message when button clicked
+    sendButton.onclick = () => {
+      const msg = userInput.value.trim();
+      if (!msg) return;
+      
+      addMessage(msg, "user-message");
+      userInput.value = "";
+      respond(msg);
+    };
+
+    // Send message when Enter key pressed
+    userInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendButton.click();
+    });
+
+    // Focus input field on load
+    window.onload = function() {
+      userInput.focus();
+    };
+  </script>
+</body>
+</html>
