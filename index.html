@@ -178,7 +178,24 @@
     <path fill="#3a86ff" d="M8 16h8v1c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2v-1z"/>
   </svg>
 </div>
+<!-- CSS for Smooth Animation & Shadow Effect -->
+<style>
+  .chatbot-icon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 8px rgba(58, 134, 255, 0.3));
+  }
+  .chatbot-icon:hover {
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 6px 12px rgba(58, 134, 255, 0.4));
+  }
+</style>
 
+  
   
   <!-- Main Content -->
   <main>
